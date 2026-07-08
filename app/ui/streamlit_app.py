@@ -3,19 +3,21 @@ import streamlit as st
 
 st.set_page_config(
     page_title="ResearchOS AI",
-    page_icon="🔬",
     layout="wide"
 )
 
 st.title("ResearchOS AI")
 
-st.write("Enterprise Multi-Agent AI Research Platform")
+topic = st.text_input("Research Topic")
 
-if st.button("Check Backend"):
+if st.button("Research"):
 
-    response = requests.get("http://127.0.0.1:8000/health")
+    response = requests.post(
+        "http://127.0.0.1:8000/research",
+        json={"topic": topic},
+    )
 
-    if response.status_code == 200:
-        st.success(response.json()["status"])
-    else:
-        st.error("Backend Offline")
+    st.subheader("Execution Plan")
+
+    for step in response.json()["planner_output"]:
+        st.write(step)
