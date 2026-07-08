@@ -4,13 +4,13 @@ from typing import TypedDict
 class ResearchState(TypedDict):
     topic: str
 
-    planner_output: str
+    planner_output: list[str]
 
-    search_results: str
+    search_results: list[str]
 
-    documentation: str
+    documentation: list[str]
 
-    github_analysis: str
+    github_analysis: dict
 
     review: str
 

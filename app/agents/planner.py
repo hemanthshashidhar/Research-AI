@@ -1,34 +1,40 @@
-from google import genai
-
-from app.config import GEMINI_API_KEY
 from app.graph.state import ResearchState
+from app.prompts.planner import PLANNER_PROMPT
+from app.services.llm_service import get_llm
 
-client = genai.Client(api_key=GEMINI_API_KEY)
+
+llm = get_llm()
 
 
-def planner_node(state: ResearchState):
+def planner_node(state: ResearchState) -> ResearchState:
+    """
+    Planner Agent
 
-    prompt = f"""
-You are an AI Research Planner.
+    Receives the research topic and generates
+    an execution plan.
+    """
 
-Your job is NOT to answer the question.
-
-Break the research topic into a short list of research tasks.
-
-Topic:
-
-{state["topic"]}
-
-Return only a numbered list.
-"""
-
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
+    prompt = PLANNER_PROMPT.format(
+        topic=state["topic"]
     )
 
-    plan = response.text
+    response = llm.invoke(prompt)
 
-    state["planner_output"] = plan.split("\n")
+    plan = []
+
+    for line in response.content.split("\n"):
+
+        line = line.strip()
+
+        if not line:
+            continue
+
+        if line[0].isdigit():
+
+            line = line.split(".", 1)[-1].strip()
+
+        plan.append(line)
+
+    state["planner_output"] = plan
 
     return state

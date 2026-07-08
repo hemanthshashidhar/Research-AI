@@ -1,10 +1,12 @@
 from fastapi import FastAPI
+
 from app.api.routes import router
+from app.core.config import APP_NAME
+from app.core.config import APP_VERSION
 
 app = FastAPI(
-    title="ResearchOS AI",
-    version="1.0.0",
-    description="Enterprise Multi-Agent AI Research Platform"
+    title=APP_NAME,
+    version=APP_VERSION,
 )
 
 app.include_router(router)

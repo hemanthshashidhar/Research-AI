@@ -1,23 +1,50 @@
 import requests
 import streamlit as st
 
+API_URL = "http://127.0.0.1:8000"
+
 st.set_page_config(
     page_title="ResearchOS AI",
-    layout="wide"
+    layout="wide",
 )
 
 st.title("ResearchOS AI")
 
-topic = st.text_input("Research Topic")
+st.caption("Enterprise Multi-Agent AI Research Platform")
 
-if st.button("Research"):
+topic = st.text_input(
+    "Research Topic",
+    placeholder="Example: Compare LangGraph and CrewAI",
+)
 
-    response = requests.post(
-        "http://127.0.0.1:8000/research",
-        json={"topic": topic},
-    )
+if st.button("Research", use_container_width=True):
+
+    if not topic.strip():
+        st.warning("Enter a research topic.")
+        st.stop()
+
+    with st.spinner("Planner Agent is generating the execution plan..."):
+
+        response = requests.post(
+            f"{API_URL}/research",
+            json={
+                "topic": topic
+            },
+            timeout=120,
+        )
+
+    if response.status_code != 200:
+        st.error(response.text)
+        st.stop()
+
+    data = response.json()
+
+    st.success("Execution plan generated")
 
     st.subheader("Execution Plan")
 
-    for step in response.json()["planner_output"]:
-        st.write(step)
+    for index, task in enumerate(
+        data["execution_plan"],
+        start=1,
+    ):
+        st.markdown(f"**{index}.** {task}")
