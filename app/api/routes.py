@@ -1,17 +1,29 @@
 from fastapi import APIRouter
 
+from app.graph.workflow import graph
+
 router = APIRouter()
 
-@router.get("/")
-def home():
-    return {
-        "project": "ResearchOS AI",
-        "status": "Running"
-    }
 
+@router.post("/research")
+def research():
 
-@router.get("/health")
-def health():
-    return {
-        "status": "healthy"
-    }
+    result = graph.invoke(
+        {
+            "topic": "LangGraph",
+
+            "planner_output": "",
+
+            "search_results": "",
+
+            "documentation": "",
+
+            "github_analysis": "",
+
+            "review": "",
+
+            "report": ""
+        }
+    )
+
+    return result
