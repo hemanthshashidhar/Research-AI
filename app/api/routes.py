@@ -40,9 +40,9 @@ def research(request: ResearchRequest):
         "report": "",
     }
 
-    result = graph.invoke(state)
-
-    return ResearchResponse(
-        topic=result["topic"],
-        execution_plan=result["planner_output"],
-    )
+ 
+    return {
+       "topic": result["topic"],
+       "execution_plan": result["planner_output"],
+       "search_summary": result["search_results"],
+           }
