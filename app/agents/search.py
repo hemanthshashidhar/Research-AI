@@ -44,10 +44,7 @@ Snippet:
         results=formatted_results,
     )
 
-    response = llm.invoke(prompt)
 
-    state["search_results"] = [
-        response.content
-    ]
+    state["search_results"] = search_results
 
     return state
