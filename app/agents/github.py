@@ -1,17 +1,36 @@
 from app.graph.state import ResearchState
-from app.services.github_service import search_repository
+
+from app.services.github_service import (
+    extract_repo_from_search_results,
+    get_repository,
+    search_repository,
+)
 
 
 def github_node(state: ResearchState) -> ResearchState:
     """
     GitHub Agent
 
-    Searches GitHub for the most relevant repository
-    related to the research topic.
+    1. Look for GitHub repositories in the
+       search results.
+
+    2. If found, analyze that repository.
+
+    3. Otherwise perform a GitHub search.
     """
 
-    repository = search_repository(state["topic"])
+    repo = extract_repo_from_search_results(
+        state["search_results"]
+    )
 
-    state["github_analysis"] = repository
+    if repo:
+
+        state["github_analysis"] = get_repository(repo)
+
+    else:
+
+        state["github_analysis"] = search_repository(
+            state["topic"]
+        )
 
     return state

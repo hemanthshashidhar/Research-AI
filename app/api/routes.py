@@ -44,13 +44,12 @@ def research(request: ResearchRequest):
     result = graph.invoke(state)
 
     return {
-        "topic": result["topic"],
+    "topic": result["topic"],
+    "execution_plan": result["planner_output"],
+    "search_summary": result["search_results"],
+    "github": result["github_analysis"],
+    "review": result["review"],
+    "report": result["report"],
+            }
 
-        "execution_plan": result["planner_output"],
 
-        "search_summary": result["search_results"],
-
-        "github": result["github_analysis"],
-
-        "review": result["review"],
-    }
