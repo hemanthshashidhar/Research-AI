@@ -5,7 +5,7 @@ from app.core.config import APP_NAME
 from app.core.config import APP_VERSION
 
 app = FastAPI(
-    title=APP_NAME,
+    title=APP_NAME, 
     version=APP_VERSION,
 )
 
