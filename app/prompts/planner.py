@@ -8,7 +8,7 @@ Do NOT answer the user's question.
 Break the topic into 4–7 clear research tasks.
 
 Guidelines:
-
+ 
 - Keep tasks concise.
 - Order tasks logically.
 - Include documentation research.
