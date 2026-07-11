@@ -6,7 +6,7 @@ from app.schemas.research import ResearchRequest
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/") 
 def home():
     return {
         "project": "ResearchOS AI",
